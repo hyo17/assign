@@ -74,36 +74,49 @@
   </form>
   <div id="result"></div>
 
-  <script>
-    function calcLogit() {
-      // 입력값 읽기
-      var educ = parseInt(document.getElementById('educ').value) || 1;
-      var age  = parseFloat(document.getElementById('age').value) || 0;
-      var cfam = parseFloat(document.getElementById('cfam').value) || 0;
-      var npins = parseInt(document.getElementById('npins').value) || 1;
+ <script>
+  function calcLogit() {
+    // 입력값 읽기
+    var educ = parseInt(document.getElementById('educ').value) || 1;
+    var age  = parseFloat(document.getElementById('age').value) || 0;
+    var cfam = parseFloat(document.getElementById('cfam').value) || 0;
+    var npins = parseInt(document.getElementById('npins').value) || 1;
 
-      // 회귀 계수 (예시값, 실제 모델에 맞게 수정 필요)
-      var intercept = 2.460317;
-      var coef_educ = 0.7;      // 예시: 학력 1단계 증가당 logit 0.7 증가
-      var coef_npins = -0.388957;
-      var coef_cfam  = 0.217770;
-      var coef_age   = -0.021905;
+    // educ 더미변수 처리
+    var educ2 = (educ === 2) ? 1 : 0;
+    var educ3 = (educ === 3) ? 1 : 0;
+    var educ4 = (educ === 4) ? 1 : 0;
 
-      // 계산
-      var logit = intercept + coef_educ * educ + coef_npins * npins + coef_cfam * cfam + coef_age * age;
-      var odds = Math.exp(logit);
-      var prob = odds / (1 + odds);
+    // 회귀 계수
+    var intercept = 1.59352;
+    var coef_educ2 = 0.60515;
+    var coef_educ3 = 1.17766;
+    var coef_educ4 = 1.68437;
+    var coef_npins = -0.38896;
+    var coef_cfam  = 0.21777;
+    var coef_age   = -0.02190;
 
-      // 결과 출력
-      document.getElementById('result').innerHTML =
-        "logit: " + logit.toFixed(3) + "<br>" +
-        "odds: " + odds.toFixed(3) + "<br>" +
-        "예측 확률: <span style='color:blue'>" + (prob*100).toFixed(1) + "%</span>";
-    }
-  </script>
+    // logit 계산
+    var logit = intercept
+                + coef_educ2 * educ2
+                + coef_educ3 * educ3
+                + coef_educ4 * educ4
+                + coef_npins * npins
+                + coef_cfam * cfam
+                + coef_age * age;
+    var odds = Math.exp(logit);
+    var prob = odds / (1 + odds);
+
+    // 결과 출력
+    document.getElementById('result').innerHTML =
+      "logit: " + logit.toFixed(3) + "<br>" +
+      "odds: " + odds.toFixed(3) + "<br>" +
+      "예측 확률: <span style='color:blue'>" + (prob*100).toFixed(1) + "%</span>";
+  }
+</script>
 
   <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #ccc; text-align: center; font-size: 0.85em; color: #777;">
-  &copy; 2025-1학기 숙명여자대학교 대학원 경영통계학 과제로  <br> 작성된 웹페이지이며 무단 복제 및 배포를 금합니다. <br>idktr@sookmyung.ac.kr
+  &copy; 2025-1학기 숙명여자대학교 대학원 경영통계학 과제로  <br> 가상으로 작성된 웹페이지입니다. 무단 복제 및 배포를 금합니다. <br>idktr@sookmyung.ac.kr
 </footer>
 </body>
 </html>
