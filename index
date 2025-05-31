@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로지스틱 회귀 계산기</title>
+  <style>
+    body { font-family: sans-serif; max-width: 400px; margin: 30px auto; }
+    label { display: block; margin: 8px 0 2px 0; }
+    input[type="number"] { width: 80px; }
+    #result { margin-top: 20px; font-weight: bold; }
+    button { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>로지스틱 회귀 예측 계산기</h2>
+  <form id="regForm" onsubmit="calcLogit(); return false;">
+    <label>educ.L: <input type="number" id="educL" value="0" step="any"></label>
+    <label>educ.Q: <input type="number" id="educQ" value="0" step="any"></label>
+    <label>educ.C: <input type="number" id="educC" value="0" step="any"></label>
+    <label>npins: <input type="number" id="npins" value="0" step="any"></label>
+    <label>cfam: <input type="number" id="cfam" value="0" step="any"></label>
+    <label>age: <input type="number" id="age" value="0" step="any"></label>
+    <button type="submit">계산하기</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    function calcLogit() {
+      // 입력값 읽기
+      var educL = parseFloat(document.getElementById('educL').value) || 0;
+      var educQ = parseFloat(document.getElementById('educQ').value) || 0;
+      var educC = parseFloat(document.getElementById('educC').value) || 0;
+      var npins = parseFloat(document.getElementById('npins').value) || 0;
+      var cfam = parseFloat(document.getElementById('cfam').value) || 0;
+      var age   = parseFloat(document.getElementById('age').value) || 0;
+
+      // 회귀 계수
+      var intercept = 2.460317;
+      var coef_educL = 1.257924;
+      var coef_educQ = -0.049223;
+      var coef_educC = -0.007416;
+      var coef_npins = -0.388957;
+      var coef_cfam  = 0.217770;
+      var coef_age   = -0.021905;
+
+      // 계산
+      var logit = intercept + coef_educL*educL + coef_educQ*educQ + coef_educC*educC
+                  + coef_npins*npins + coef_cfam*cfam + coef_age*age;
+      var odds = Math.exp(logit);
+      var prob = odds / (1 + odds);
+
+      // 결과 출력
+      document.getElementById('result').innerHTML =
+        "logit: " + logit.toFixed(3) + "<br>" +
+        "odds: " + odds.toFixed(3) + "<br>" +
+        "예측 확률: <span style='color:blue'>" + (prob*100).toFixed(1) + "%</span>";
+    }
+  </script>
+</body>
+</html>
