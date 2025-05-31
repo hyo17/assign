@@ -9,11 +9,35 @@
     select, input[type="number"] { width: 120px; }
     #result { margin-top: 20px; font-weight: bold; }
     .desc { font-size: 0.95em; color: #555; margin-bottom: 8px; }
+    .guide {
+      background: #f1f7ff;
+      border-left: 4px solid #1976d2;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 0.98em;
+      color: #222;
+    }
     button { margin-top: 15px; }
   </style>
 </head>
 <body>
   <h2>Health literacy 예측 계산기</h2>
+  <div class="guide">
+    <b>이 계산기는 일차의료 현장에서 신속하게 건강 문해력(Health literacy)을 예측할 수 있도록 개발된 도구입니다.</b><br><br>
+    본 계산기는 실제 데이터를 기반으로 한 로지스틱 회귀 모델을 사용합니다.<br>
+    입력하신 정보(최종학력, 연령, 가구원수, 민간의료보험 유무)를 바탕으로 건강 문해력이 평균 이상일 확률을 예측합니다.<br><br>
+    <b>모델 성능</b><br>
+    - 정확도(Accuracy): 0.66<br>
+    - 민감도(Sensitivity): 0.68<br>
+    - 특이도(Specificity): 0.63<br><br>
+    <b>Cut-off 안내</b><br>
+    예측 확률이 <b>0.59 이상</b>이면 건강 문해력이 평균 이상일 가능성이 높으며,<br>
+    <b>0.59 미만</b>이면 평균 미만일 가능성이 높습니다.<br><br>
+    <span style="color:#1976d2; font-size:0.96em;">
+      본 예측 계산기는 실제 건강 문해력 평가를 대체하는 것이 아니라,<br>
+      의료 현장에서 빠른 선별 및 상담 참고용으로 활용하시길 권장합니다.
+    </span>
+  </div>
   <form id="regForm" onsubmit="calcLogit(); return false;">
     <label>
       최종학력(educ):
