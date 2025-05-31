@@ -2,24 +2,49 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>로지스틱 회귀 계산기</title>
+  <title>Health literacy 선별검사</title>
   <style>
     body { font-family: sans-serif; max-width: 400px; margin: 30px auto; }
-    label { display: block; margin: 8px 0 2px 0; }
-    input[type="number"] { width: 80px; }
+    label { display: block; margin: 12px 0 2px 0; }
+    select, input[type="number"] { width: 120px; }
     #result { margin-top: 20px; font-weight: bold; }
+    .desc { font-size: 0.95em; color: #555; margin-bottom: 8px; }
     button { margin-top: 15px; }
   </style>
 </head>
 <body>
   <h2>로지스틱 회귀 예측 계산기</h2>
   <form id="regForm" onsubmit="calcLogit(); return false;">
-    <label>educ.L: <input type="number" id="educL" value="0" step="any"></label>
-    <label>educ.Q: <input type="number" id="educQ" value="0" step="any"></label>
-    <label>educ.C: <input type="number" id="educC" value="0" step="any"></label>
-    <label>npins: <input type="number" id="npins" value="0" step="any"></label>
-    <label>cfam: <input type="number" id="cfam" value="0" step="any"></label>
-    <label>age: <input type="number" id="age" value="0" step="any"></label>
+    <label>
+      최종학력(educ):
+      <select id="educ">
+        <option value="1">1: 초졸 이하</option>
+        <option value="2">2: 중졸</option>
+        <option value="3">3: 고졸</option>
+        <option value="4">4: 대졸 이상</option>
+      </select>
+    </label>
+    <div class="desc">최종학력 (1: 초졸 이하, 2: 중졸, 3: 고졸, 4: 대졸 이상)</div>
+
+    <label>
+      연령(age): <input type="number" id="age" value="50" min="0" max="120" step="1">
+    </label>
+    <div class="desc">연령 (숫자, 예: 50)</div>
+
+    <label>
+      가구원수(cfam): <input type="number" id="cfam" value="3" min="1" step="1">
+    </label>
+    <div class="desc">가구원수 (숫자, 예: 3)</div>
+
+    <label>
+      민간의료보험(npins):
+      <select id="npins">
+        <option value="1">1: 유</option>
+        <option value="2">2: 무</option>
+      </select>
+    </label>
+    <div class="desc">민간의료보험 유무 (유: 1, 무: 2)</div>
+
     <button type="submit">계산하기</button>
   </form>
   <div id="result"></div>
@@ -27,25 +52,20 @@
   <script>
     function calcLogit() {
       // 입력값 읽기
-      var educL = parseFloat(document.getElementById('educL').value) || 0;
-      var educQ = parseFloat(document.getElementById('educQ').value) || 0;
-      var educC = parseFloat(document.getElementById('educC').value) || 0;
-      var npins = parseFloat(document.getElementById('npins').value) || 0;
+      var educ = parseInt(document.getElementById('educ').value) || 1;
+      var age  = parseFloat(document.getElementById('age').value) || 0;
       var cfam = parseFloat(document.getElementById('cfam').value) || 0;
-      var age   = parseFloat(document.getElementById('age').value) || 0;
+      var npins = parseInt(document.getElementById('npins').value) || 1;
 
-      // 회귀 계수
+      // 회귀 계수 (예시값, 실제 모델에 맞게 수정 필요)
       var intercept = 2.460317;
-      var coef_educL = 1.257924;
-      var coef_educQ = -0.049223;
-      var coef_educC = -0.007416;
+      var coef_educ = 0.7;      // 예시: 학력 1단계 증가당 logit 0.7 증가
       var coef_npins = -0.388957;
       var coef_cfam  = 0.217770;
       var coef_age   = -0.021905;
 
       // 계산
-      var logit = intercept + coef_educL*educL + coef_educQ*educQ + coef_educC*educC
-                  + coef_npins*npins + coef_cfam*cfam + coef_age*age;
+      var logit = intercept + coef_educ * educ + coef_npins * npins + coef_cfam * cfam + coef_age * age;
       var odds = Math.exp(logit);
       var prob = odds / (1 + odds);
 
