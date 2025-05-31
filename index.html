@@ -7,6 +7,7 @@
     body { font-family: sans-serif; max-width: 400px; margin: 30px auto; }
     label { display: block; margin: 12px 0 2px 0; }
     select, input[type="number"] { width: 120px; }
+    input[type='number'] { color: gray; }
     #result { margin-top: 20px; font-weight: bold; }
     .desc { font-size: 0.95em; color: #555; margin-bottom: 8px; }
     .guide {
@@ -40,7 +41,7 @@
   </div>
   <form id="regForm" onsubmit="calcLogit(); return false;">
     <label>
-      최종학력(educ):
+      최종학력:
       <select id="educ">
         <option value="1">1: 초졸 이하</option>
         <option value="2">2: 중졸</option>
@@ -51,17 +52,17 @@
     <div class="desc">최종학력 (1: 초졸 이하, 2: 중졸, 3: 고졸, 4: 대졸 이상)</div>
 
     <label>
-      연령(age): <input type="number" id="age" value="50" min="0" max="120" step="1">
+      연령: <input type="number" id="age" value="50" min="0" max="120" step="1">
     </label>
     <div class="desc">연령 (숫자, 예: 70)</div>
 
     <label>
-      가구원수(cfam): <input type="number" id="cfam" value="3" min="1" step="1">
+      가구원수: <input type="number" id="cfam" value="3" min="1" step="1">
     </label>
     <div class="desc">가구원수 (숫자, 예: 3)</div>
 
     <label>
-      민간의료보험(npins):
+      민간의료보험:
       <select id="npins">
         <option value="1">1: 유</option>
         <option value="2">2: 무</option>
